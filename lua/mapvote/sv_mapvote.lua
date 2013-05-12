@@ -104,7 +104,7 @@ function MapVote.Start(length, current, limit, prefix)
             
             for k2, v2 in pairs(player.GetAll()) do
                 if(v2:SteamID() == k) then
-                    if(MapVote.HasExtraVotePower(v)) then
+                    if(MapVote.HasExtraVotePower(v2)) then
                         map_results[v] = map_results[v] + 2
                     else
                         map_results[v] = map_results[v] + 1

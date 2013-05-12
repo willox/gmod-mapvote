@@ -180,7 +180,7 @@ function PANEL:AddVoter(voter)
     icon_container:SetTooltip(voter:Name())
     icon:SetPlayer(voter, 16)
 
-    if MapVote.HasExtraVotePower(v) then
+    if MapVote.HasExtraVotePower(voter) then
         icon_container:SetSize(40, 20)
         icon:SetPos(21, 2)
         icon_container.img = star_mat
@@ -216,7 +216,7 @@ function PANEL:Think()
             else
                 local bar = self:GetMapButton(MapVote.Votes[v.Player:SteamID()])
                 
-                if(MapVote.HasExtraVotePower(v)) then
+                if(MapVote.HasExtraVotePower(v.Player)) then
                     bar.NumVotes = bar.NumVotes + 2
                 else
                     bar.NumVotes = bar.NumVotes + 1

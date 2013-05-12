@@ -9,11 +9,11 @@ MapVote.Config = {}
     }
 -- CONFIG
 
-function MapVote.HasExtraMapVotePower(ply)
--- Example that gives admins more voting power
--- if ply:IsAdmin() then
---		return true
---	end
+function MapVote.HasExtraVotePower(ply)
+	-- Example that gives admins more voting power
+	if ply:IsAdmin() then
+		return true
+	end
 
 	return false
 end
