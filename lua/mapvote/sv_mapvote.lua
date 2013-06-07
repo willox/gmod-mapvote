@@ -26,22 +26,11 @@ net.Receive("RAM_MapVoteUpdate", function(len, ply)
     end
 end)
 
-function inTable(tbl, item)
-    for key, value in pairs(tbl) do
-        if value == item then
-            return true
-        end
-    end
-    return false
-end
-
 if file.Exists( "recentmaps.txt", "DATA" ) then
     recentmaps = util.JSONToTable(file.Read("recentmaps.txt", "DATA"))
 else
     recentmaps = {}
 end
-
-cooldown = MapVote.Config.EnableCooldown or true
 
 function CoolDownDoStuff()
     cooldownnum = MapVote.Config.MapsBeforeRevote or 3
@@ -52,22 +41,19 @@ function CoolDownDoStuff()
 
     local curmap = game.GetMap():lower()..".bsp"
 
-    if not inTable(recentmaps, curmap) then
+    if not table.HasValue(recentmaps, curmap) then
         table.insert(recentmaps, 1, curmap)
     end
 
     file.Write("recentmaps.txt", util.TableToJSON(recentmaps))
 end
 
-if cooldown then
-    hook.Add( "Initialize", "Ion_Add_Recent", CoolDownDoStuff )
-end
-
 function MapVote.Start(length, current, limit, prefix)
     current = current or MapVote.Config.AllowCurrentMap or false
     length = length or MapVote.Config.TimeLimit or 28
     limit = limit or MapVote.Config.MapLimit or 24
-
+    cooldown = MapVote.Config.EnableCooldown or true
+    
     local is_expression = false
 
     if not prefix then
@@ -96,7 +82,7 @@ function MapVote.Start(length, current, limit, prefix)
     for k, map in RandomPairs(maps) do
         local mapstr = map:sub(1, -5):lower()
         if(not current and game.GetMap():lower()..".bsp" == map) then continue end
-        if(cooldown and inTable(recentmaps, map)) then end
+        if(cooldown and table.HasValue(recentmaps, map)) then continue end
 
         if is_expression then
             if(string.find(map, prefix)) then -- This might work (from gamemode.txt)
@@ -151,6 +137,8 @@ function MapVote.Start(length, current, limit, prefix)
             
         end
         
+        CoolDownDoStuff()
+
         local winner = table.GetWinningKey(map_results) or 1
         
         net.Start("RAM_MapVoteUpdate")
@@ -161,6 +149,7 @@ function MapVote.Start(length, current, limit, prefix)
         
         local map = MapVote.CurrentMaps[winner]
 
+        
         
         timer.Simple(4, function()
             hook.Run("MapVoteChange", map)
