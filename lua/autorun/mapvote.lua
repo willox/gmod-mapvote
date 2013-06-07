@@ -8,6 +8,7 @@ MapVote.Config = {}
         AllowCurrentMap = false,
         EnableCooldown = true,
         MapsBeforeRevote = 3,
+        MapPrefixes = "{"ttt_"}"
     }
 -- CONFIG
 
@@ -36,6 +37,7 @@ if SERVER then
     AddCSLuaFile("mapvote/cl_mapvote.lua")
 
     include("mapvote/sv_mapvote.lua")
+    include("mapvote/rtv.lua")
 else
     include("mapvote/cl_mapvote.lua")
 end

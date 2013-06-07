@@ -37,9 +37,8 @@ function inTable(tbl, item)
     return false
 end
 
-cooldownnum = MapVote.Config.MapsBeforeRevote or 3
-
 function CoolDownDoStuff()
+    cooldownnum = MapVote.Config.MapsBeforeRevote or 3
         if table.getn(recentmaps) == cooldownnum then 
             table.remove(recentmaps)
         end
