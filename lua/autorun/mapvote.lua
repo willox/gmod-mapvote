@@ -6,14 +6,18 @@ MapVote.Config = {}
         MapLimit = 24,
         TimeLimit = 28,
         AllowCurrentMap = false,
+        EnableCooldown = true,
+        MapsBeforeRevote = 3,
     }
 -- CONFIG
 
 function MapVote.HasExtraVotePower(ply)
 	-- Example that gives admins more voting power
-	if ply:IsAdmin() then
+	--[[
+    if ply:IsAdmin() then
 		return true
-	end
+	end 
+    ]]
 
 	return false
 end

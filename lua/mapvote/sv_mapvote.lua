@@ -26,11 +26,38 @@ net.Receive("RAM_MapVoteUpdate", function(len, ply)
     end
 end)
 
+recentmaps = {}
+
+function inTable(tbl, item)
+    for key, value in pairs(tbl) do
+        if value == item then
+            return true
+        end
+    end
+    return false
+end
+
+cooldownnum = MapVote.Config.MapsBeforeRevote or 3
+
+function CoolDownDoStuff()
+        if table.getn(recentmaps) == cooldownnum then 
+            table.remove(recentmaps)
+        end
+        local curmap = game.GetMap():lower()..".bsp"
+        if not inTable(recentmaps, curmap) then
+            table.insert(recentmaps, 1, curmap)
+        end
+end
+
+if cooldown then
+    hook.Add( "Initialize", "Ion_Add_Recent", CoolDownDoStuff )
+end
 
 function MapVote.Start(length, current, limit, prefix)
     current = current or MapVote.Config.AllowCurrentMap or false
     length = length or MapVote.Config.TimeLimit or 28
     limit = limit or MapVote.Config.MapLimit or 24
+    cooldown = MapVote.Config.EnableCooldown or true
 
     local is_expression = false
 
@@ -60,6 +87,7 @@ function MapVote.Start(length, current, limit, prefix)
     for k, map in RandomPairs(maps) do
         local mapstr = map:sub(1, -5):lower()
         if(not current and game.GetMap():lower()..".bsp" == map) then continue end
+        if(cooldown and inTable(recentmaps, map)) then end
 
         if is_expression then
             if(string.find(map, prefix)) then -- This might work (from gamemode.txt)
