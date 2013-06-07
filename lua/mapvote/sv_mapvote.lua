@@ -26,8 +26,6 @@ net.Receive("RAM_MapVoteUpdate", function(len, ply)
     end
 end)
 
-recentmaps = {}
-
 function inTable(tbl, item)
     for key, value in pairs(tbl) do
         if value == item then
@@ -36,6 +34,14 @@ function inTable(tbl, item)
     end
     return false
 end
+
+if file.Exists( "recentmaps.txt", "DATA" ) then
+    recentmaps = util.JSONToTable(file.Read("recentmaps.txt"))
+else
+    recentmaps = {}
+end
+
+cooldown = MapVote.Config.EnableCooldown or true
 
 function CoolDownDoStuff()
     cooldownnum = MapVote.Config.MapsBeforeRevote or 3
@@ -46,6 +52,7 @@ function CoolDownDoStuff()
         if not inTable(recentmaps, curmap) then
             table.insert(recentmaps, 1, curmap)
         end
+    file.Write("recentmaps.txt", util.TableToJSON(recentmaps))
 end
 
 if cooldown then
@@ -56,7 +63,6 @@ function MapVote.Start(length, current, limit, prefix)
     current = current or MapVote.Config.AllowCurrentMap or false
     length = length or MapVote.Config.TimeLimit or 28
     limit = limit or MapVote.Config.MapLimit or 24
-    cooldown = MapVote.Config.EnableCooldown or true
 
     local is_expression = false
 
