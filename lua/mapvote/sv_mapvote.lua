@@ -36,7 +36,7 @@ function inTable(tbl, item)
 end
 
 if file.Exists( "recentmaps.txt", "DATA" ) then
-    recentmaps = util.JSONToTable(file.Read("recentmaps.txt"))
+    recentmaps = util.JSONToTable(file.Read("recentmaps.txt", "DATA"))
 else
     recentmaps = {}
 end
@@ -45,13 +45,17 @@ cooldown = MapVote.Config.EnableCooldown or true
 
 function CoolDownDoStuff()
     cooldownnum = MapVote.Config.MapsBeforeRevote or 3
-        if table.getn(recentmaps) == cooldownnum then 
-            table.remove(recentmaps)
-        end
-        local curmap = game.GetMap():lower()..".bsp"
-        if not inTable(recentmaps, curmap) then
-            table.insert(recentmaps, 1, curmap)
-        end
+
+    if table.getn(recentmaps) == cooldownnum then 
+        table.remove(recentmaps)
+    end
+
+    local curmap = game.GetMap():lower()..".bsp"
+
+    if not inTable(recentmaps, curmap) then
+        table.insert(recentmaps, 1, curmap)
+    end
+
     file.Write("recentmaps.txt", util.TableToJSON(recentmaps))
 end
 
