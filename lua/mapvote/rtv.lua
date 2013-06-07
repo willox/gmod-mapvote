@@ -27,12 +27,8 @@ function RTV.RemoveVote()
 end
 
 function RTV.Start()
-local current = current or MapVote.Config.AllowCurrentMap or false
-local length = length or MapVote.Config.TimeLimit or 28
-local limit = limit or MapVote.Config.MapLimit or 24
-local prefixes = prefixes or Mapvote.Config.MapPrefixes or "{"ttt"}"
 
-MapVote.Start(length, current, limit, prefixes)
+MapVote.Start(length, current, limit, {"ttt_"})
 
 end
 

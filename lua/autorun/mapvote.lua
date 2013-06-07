@@ -1,14 +1,13 @@
 MapVote = {}
 MapVote.Config = {}
 
--- CONFIG (sort of)
+-- CONFIG
     MapVote.Config = {
         MapLimit = 24,
         TimeLimit = 28,
         AllowCurrentMap = false,
         EnableCooldown = true,
         MapsBeforeRevote = 3,
-        MapPrefixes = "{"ttt_"}"
     }
 -- CONFIG
 
