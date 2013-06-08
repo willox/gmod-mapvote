@@ -1,24 +1,24 @@
 MapVote = {}
 MapVote.Config = {}
 
--- CONFIG
-    MapVote.Config.Default = {
-        MapLimit = 24,
-        TimeLimit = 28,
-        AllowCurrentMap = false,
-        EnableCooldown = true,
-        MapsBeforeRevote = 3,
-        MapPrefixes = {"ttt_"},
-        RTVPlayerCount = 3,
+--Default Config
+MapVoteConfigDefault = {
+    MapLimit = 24,
+    TimeLimit = 28,
+    AllowCurrentMap = false,
+    EnableCooldown = true,
+    MapsBeforeRevote = 3,
+    RTVPlayerCount = 3,
+    MapPrefixes = {"ttt_"}
     }
--- CONFIG
+--Default Config
 
-hook.Add( "Initialize", "MapVoteConfig", function()
+hook.Add( "Initialize", "MapVoteConfigSetup", function()
     if not file.Exists( "mapvote", "DATA") then
         file.CreateDir( "mapvote" )
     end
     if not file.Exists( "mapvote/config.txt", "DATA" ) then
-        file.Write("mapvote/config.txt", util.TableToJSON(MapVote.Config.Default))
+        file.Write( "mapvote/config.txt", util.TableToJSON( MapVoteConfigDefault ) )
     end
 end )
 

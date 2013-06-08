@@ -1,4 +1,5 @@
 hook.Add( "Initialize", "AutoTTTMapVote", function()
+      if GAMEMODE_NAME == "terrortown" then
         function CheckForMapSwitch()
            -- Check for mapswitch
            local rounds_left = math.max(0, GetGlobalInt("ttt_rounds_left", 6) - 1)
@@ -15,9 +16,18 @@ hook.Add( "Initialize", "AutoTTTMapVote", function()
               LANG.Msg("limit_time", {mapname = nextmap})
               switchmap = true
             end
-            if GAMEMODE_NAME == "terrortown" and switchmap then
+            if switchmap then
                 timer.Stop("end2prep")
                 MapVote.Start(nil, nil, nil, nil)
             end
         end
+      end
+      
+      if GAMEMODE_NAME == "deathrun" then
+          function RTV.Start()
+            MapVote.Start(nil, nil, nil, nil)
+          end
+      end
 end )
+
+
