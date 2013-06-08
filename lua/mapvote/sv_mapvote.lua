@@ -1,6 +1,7 @@
 util.AddNetworkString("RAM_MapVoteStart")
 util.AddNetworkString("RAM_MapVoteUpdate")
 util.AddNetworkString("RAM_MapVoteCancel")
+util.AddNetworkString("RTV_Delay")
 
 MapVote.Continued = false
 
@@ -59,7 +60,7 @@ function MapVote.Start(length, current, limit, prefix)
     length = length or MapVote.Config.TimeLimit or 28
     limit = limit or MapVote.Config.MapLimit or 24
     cooldown = MapVote.Config.EnableCooldown or true
-    prefix = prefix or MapVote.Config.MapPrefixes or {"ttt_"}
+    prefix = prefix or MapVote.Config.MapPrefixes
 
     local is_expression = false
 
