@@ -54,6 +54,7 @@ Modifications
 Featuress added made by others:
 * RTV Implimentation by [Eccid](http://facepunch.com/member.php?u=536187)
 * ULX integration by [Ambro](http://facepunch.com/member.php?u=555824)
+* RTV vote delay to end of TTT and Deathrun rounds (Thanks Again, Willox!)
 
 My Feature Additions:
 * CoolDown System
@@ -61,5 +62,5 @@ My Feature Additions:
 * Automatically working with TTT and Deathun
 
 Planned Feature Additions:
-* RTV vote delay to end of TTT rounds (With config enable/disable)
+* Enable/Disable on RTV delay to round end on TTT and Deathrun
 * Config to give extra voting power

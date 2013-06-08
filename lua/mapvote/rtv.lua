@@ -25,9 +25,24 @@ function RTV.RemoveVote()
 end
 
 function RTV.Start()
-
-MapVote.Start(nil, nil, nil, nil)
-
+			if GAMEMODE.Name == "Trouble in Terrorist Town" then
+				chat.AddText(color( 102,255,51 ), "[RTV]", Color( 255,255,255 ), " The vote has been rocked, map vote will begin on round end")
+ 
+				hook.Add("TTTEndRound", "MapvoteDelayed", function()
+					MapVote.Start(nil, nil, nil, nil)
+				end)
+			elseif GAMEMODE.name == "Deathrun" then
+				chat.AddText(color( 102,255,51 ), "[RTV]", Color( 255,255,255 ), " The vote has been rocked, map vote will begin on round end")
+ 
+				hook.Add("RoundEnd", "MapvoteDelayed", function()
+					MapVote.Start(nil, nil, nil, nil)
+				end)
+			else
+				chat.AddText(color( 102,255,51 ), "[RTV]", Color( 255,255,255 ), " The vote has been rocked, map vote imminent")
+				timer.Simple(4, function()
+					MapVote.Start(nil, nil, nil, nil)
+				end)
+			end
 end
 
 
