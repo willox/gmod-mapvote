@@ -11,12 +11,10 @@ RTV.ChatCommands = {
 RTV.TotalVotes = 0
 
 RTV.Wait = 60 -- The wait time in seconds. This is how long a player has to wait before voting when the map changes. 
-			  -- If the "extend" option is picked, you have to wait double this before voting again.
-
 
 RTV._ActualWait = CurTime() + RTV.Wait
 
-
+RTV.PlayerCount = MapVote.Config.RTVPlayerCount or 3
 
 function RTV.ShouldChange()
 	return RTV.TotalVotes >= math.Round(#player.GetAll()*0.66)
@@ -81,6 +79,9 @@ function RTV.CanVote( ply )
 	if RTV.ChangingMaps then
 		return false, "There has already been a vote, the map is going to change!"
 	end
+	if plyCount < RTV.PlayerCount then
+        return false, "You need more players before you can rock the vote!"
+    end
 
 	return true
 

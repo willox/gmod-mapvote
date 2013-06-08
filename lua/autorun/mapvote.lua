@@ -9,6 +9,7 @@ MapVote.Config = {}
         EnableCooldown = true,
         MapsBeforeRevote = 3,
         MapPrefixes = {"ttt_"},
+        RTVPlayerCount = 3,
     }
 -- CONFIG
 
