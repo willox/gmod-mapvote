@@ -12,13 +12,13 @@ Usage
 
 Starting a vote from within lua is rather simple.
 
-```lua
+```Lua
 MapVote.Start(voteLength, allowCurrentMap, mapLimit, mapPrefix)
 ```
 All arguments to this function are optional and the map prefix is acquired from the config, or if it isn't set, gamemode.txt file if available. You can also set up defaults within garrysmod/data/mapvote/config.txt which is generated during the first run.
 
 It is also possible to cancel map votes from within lua with:
-```lua
+```Lua
 MapVote.Cancel()
 ```
 
@@ -27,7 +27,7 @@ You can give players extra voting power in lua/autorun/mapvote.lua with the MapV
 TTT Setup
 =======================
 Simply put, you can do this by finding the following code in gamemodes/terrortown/gamemode/init.lua (around line 726)
-```
+```Lua
    if switchmap then
       timer.Stop("end2prep")
       timer.Simple(15, game.LoadNextMap)
@@ -39,7 +39,7 @@ Simply put, you can do this by finding the following code in gamemodes/terrortow
 ```
 
 and replacing it with
-```
+```Lua
    if switchmap then
       timer.Stop("end2prep")
       MapVote.Start(15, false, 24, "ttt_")
@@ -53,13 +53,13 @@ and replacing it with
 This will cause a map vote at the end of the round, based on the settings defined in your config.txt
 
 If you plan on using more than one map prefix, you can edit the config.txt.  It look like this by default:
-```
+```JSON
 {"MapPrefixes":{"1":"ttt_"},"MapLimit":24,"TimeLimit":28,"AllowCurrentMap":false,"MapsBeforeRevote":3,"EnableCooldown":true}
 ```
 "MapsBeforeRevote" is how many maps before the map is taken off the cooldown list after it's played.
 
 To add more Map Prefixes, do this:
-```
+```JSON
 {"MapPrefixes":{"1":"ttt_","2":"zm_","3":"de_"},"MapLimit":24,"TimeLimit":28,"AllowCurrentMap":false,"MapsBeforeRevote":3,"EnableCooldown":true}
 ```
 
