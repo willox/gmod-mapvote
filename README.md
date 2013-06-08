@@ -42,7 +42,7 @@ and replacing it with
 ```Lua
    if switchmap then
       timer.Stop("end2prep")
-      MapVote.Start(15, false, 24, "ttt_")
+      MapVote.Start(nil, nil, nil, nil)
    elseif ShouldMapSwitch() then
       LANG.Msg("limit_left", {num = rounds_left,
                               time = math.ceil(time_left / 60),
