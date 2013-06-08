@@ -24,43 +24,28 @@ MapVote.Cancel()
 
 You can give players extra voting power in lua/autorun/mapvote.lua with the MapVote.HasExtraVotePower function, and a config will be added at some point.
 
-TTT Setup
+TTT and Deathrun Setup
 =======================
-Simply put, you can do this by finding the following code in gamemodes/terrortown/gamemode/init.lua (around line 726)
-```Lua
-   if switchmap then
-      timer.Stop("end2prep")
-      timer.Simple(15, game.LoadNextMap)
-   elseif ShouldMapSwitch() then
-      LANG.Msg("limit_left", {num = rounds_left,
-                              time = math.ceil(time_left / 60),
-                              mapname = nextmap})
-   end
-```
 
-and replacing it with
-```Lua
-   if switchmap then
-      timer.Stop("end2prep")
-      MapVote.Start(nil, nil, nil, nil)
-   elseif ShouldMapSwitch() then
-      LANG.Msg("limit_left", {num = rounds_left,
-                              time = math.ceil(time_left / 60),
-                              mapname = "chosen by a vote"})
-   end
-```
+You no longer have to edit any files for MapVote to work with Trouble in Terrorist Town or Deathrun anymore!  It now overrides the default functions for map switching.
 
-This will cause a map vote at the end of the round, based on the settings defined in your config.txt
+*Note: On Deathrun, it still uses the build in RTV, so changing the minimum player count doesn't work*
 
-If you plan on using more than one map prefix, you can edit the config.txt.  It look like this by default:
+You can edit the config.txt located in garrysmod/data/mapvote/ to change several settings.  It should look like this by default (if it's empty, just copy this into it):
 ```JSON
-{"MapPrefixes":{"1":"ttt_"},"MapLimit":24,"TimeLimit":28,"AllowCurrentMap":false,"MapsBeforeRevote":3,"EnableCooldown":true}
+{"RTVPlayerCount":3,"MapLimit":24,"TimeLimit":28,"AllowCurrentMap":false,"MapPrefixes":{"1":"ttt_"},"MapsBeforeRevote":3,"EnableCooldown":true}
 ```
-"MapsBeforeRevote" is how many maps before the map is taken off the cooldown list after it's played.
+* "RTVPlayerCount" is the minimum number of players that need to be online (on TTT) for RTV to work.
+* "MapLimit" is the number of maps shown on the vote screen.
+* "TimeLimit" is how long the vote is shown for.
+* "AllowCurrentMap" true/false to allow a the current map in the map vote list.
+* "MapPrefixes" are the prefixes of the maps that should be used in the vote.
+* "MapsBeforeRevote" is the number of maps that must be played before a map is in the vote menu again (if EnableCooldown is true)
+* "EnableCooldown" is a true/false variable on whether to remove a map from voting for a while after it's played.
+* "MapsBeforeRevote" is how many maps before the map is taken off the cooldown list after it's played.
 
-To add more Map Prefixes, do this:
-```JSON
-{"MapPrefixes":{"1":"ttt_","2":"zm_","3":"de_"},"MapLimit":24,"TimeLimit":28,"AllowCurrentMap":false,"MapsBeforeRevote":3,"EnableCooldown":true}
+To add more Map Prefixes, do this: ```JSON
+{"RTVPlayerCount":3,"MapLimit":24,"TimeLimit":28,"AllowCurrentMap":false,"MapPrefixes":{"1":"ttt_","2":"zm_","3":"de_"},"MapsBeforeRevote":3,"EnableCooldown":true}
 ```
 
 Modifications
@@ -72,8 +57,8 @@ Featuress added made by others:
 My Feature Additions:
 * CoolDown System
 * JSON config that auto-generates at garrysmod/data/mapvote/config.txt
+* Automatically working with TTT and Deathun
 
 Planned Feature Additions:
-* Automatically working with TTT
 * RTV vote delay to end of TTT rounds (With config enable/disable)
 * Config to give extra voting power
