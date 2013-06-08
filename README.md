@@ -1,9 +1,9 @@
 MapVote
 =======================
 
-MapVote is a wonderful little GMOD13 addon origionally made by [Willox](http://steamcommunity.com/id/Willox303) that allows you to easily invoke a map vote from within any gamemode of your choosing.
+MapVote is a wonderful little GMOD13 addon originally made by [Willox](http://steamcommunity.com/id/Willox303) that allows you to easily invoke a map vote from within any gamemode of your choosing.
 
-It recieved many suggestions and additions in it's [origional facepunch thread](http://facepunch.com/showthread.php?t=1268353).
+It recieved many suggestions and additions in it's [original facepunch thread](http://facepunch.com/showthread.php?t=1268353).
 
 This is my version which takes many of the additions and suggestions, and impliements them in one, simple, configurable addon.
 
