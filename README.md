@@ -44,9 +44,8 @@ You can edit the config.txt located in garrysmod/data/mapvote/ to change several
 * "EnableCooldown" is a true/false variable on whether to remove a map from voting for a while after it's played.
 * "MapsBeforeRevote" is how many maps before the map is taken off the cooldown list after it's played.
 
-To add more Map Prefixes, do this: ```JSON
-{"RTVPlayerCount":3,"MapLimit":24,"TimeLimit":28,"AllowCurrentMap":false,"MapPrefixes":{"1":"ttt_","2":"zm_","3":"de_"},"MapsBeforeRevote":3,"EnableCooldown":true}
-```
+To add more Map Prefixes, do this: 
+```JSON {"RTVPlayerCount":3,"MapLimit":24,"TimeLimit":28,"AllowCurrentMap":false,"MapPrefixes":{"1":"ttt_","2":"zm_","3":"de_"},"MapsBeforeRevote":3,"EnableCooldown":true}```
 
 Modifications
 =======================
