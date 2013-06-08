@@ -32,6 +32,12 @@ else
     recentmaps = {}
 end
 
+if file.Exists( "mapvote/config.txt", "DATA" ) then
+    MapVote.Config = util.JSONToTable(file.Read("mapvote/config.txt", "DATA"))
+else
+    MapVote.Config = {}
+end
+
 function CoolDownDoStuff()
     cooldownnum = MapVote.Config.MapsBeforeRevote or 3
 

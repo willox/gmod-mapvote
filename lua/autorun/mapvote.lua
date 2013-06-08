@@ -16,9 +16,7 @@ hook.Add( "Initialize", "MapVoteConfig", function()
     if not file.Exists( "mapvote", "DATA") then
         file.CreateDir( "mapvote" )
     end
-    if file.Exists( "mapvote/config.txt", "DATA" ) then
-        MapVote.Config = util.JSONToTable(file.Read("mapvote/config.txt", "DATA"))
-    else
+    if not file.Exists( "mapvote/config.txt", "DATA" ) then
         file.Write("mapvote/config.txt", util.TableToJSON(MapVote.Config.Default))
     end
 end )
