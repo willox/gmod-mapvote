@@ -28,7 +28,7 @@ end
 
 function RTV.Start()
 
-MapVote.Start(length, current, limit, {"ttt_"})
+MapVote.Start(nil, nil, nil, nil)
 
 end
 
