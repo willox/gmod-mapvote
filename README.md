@@ -7,6 +7,8 @@ It recieved many suggestions and additions in it's [original facepunch thread](h
 
 This is my version which takes many of the additions and suggestions, and impliements them in one, simple, configurable addon.
 
+[You can also get this addon through steam workshop!](http://steamcommunity.com/sharedfiles/filedetails/?id=151583504)
+
 Usage
 =======================
 
