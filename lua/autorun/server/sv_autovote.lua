@@ -30,7 +30,7 @@ hook.Add( "Initialize", "AutoTTTMapVote", function()
       end
       
       if GAMEMODE_NAME == "zombiesurvival" then
-        function GM:LoadNextMap()
+        function GAMEMODE:LoadNextMap()
           MapVote.Start(nil, nil, nil, nil)
         end
       end
