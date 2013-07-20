@@ -43,7 +43,7 @@ net.Receive("RAM_MapVoteStart", function()
         MapVote.Panel:Remove()
     end
     
-    MapVote.Panel = vgui.Create("VoteScreen")
+    MapVote.Panel = vgui.Create("RAM_VoteScreen")
     MapVote.Panel:SetMaps(MapVote.CurrentMaps)
 end)
 
@@ -321,4 +321,4 @@ function PANEL:Flash(id)
     end
 end
 
-derma.DefineControl("VoteScreen", "", PANEL, "DPanel")
+derma.DefineControl("RAM_VoteScreen", "", PANEL, "DPanel")
