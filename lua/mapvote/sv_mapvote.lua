@@ -27,7 +27,7 @@ net.Receive("RAM_MapVoteUpdate", function(len, ply)
 end)
 
 
-function MapVote.Start(length, current, limit, prefix)
+function MapVote.Start(length, current, limit, prefix, callback)
     current = current or MapVote.Config.AllowCurrentMap or false
     length = length or MapVote.Config.TimeLimit or 28
     limit = limit or MapVote.Config.MapLimit or 24
@@ -126,8 +126,13 @@ function MapVote.Start(length, current, limit, prefix)
 
         
         timer.Simple(4, function()
-            hook.Run("MapVoteChange", map)
-            RunConsoleCommand("changelevel", map)
+            if (hook.Run("MapVoteChange", map) != false) then
+                if (callback) then
+                    callback(map)
+                else
+                    RunConsoleCommand("changelevel", map)
+                end
+            end
         end)
     end)
 end
