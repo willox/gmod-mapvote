@@ -74,6 +74,10 @@ net.Receive("RAM_MapVoteCancel", function()
     end
 end)
 
+net.Receive("RTV_Delay", function()
+    chat.AddText(Color( 102,255,51 ), "[RTV]", Color( 255,255,255 ), " The vote has been rocked, map vote will begin on round end")
+end)
+
 local PANEL = {}
 
 function PANEL:Init()

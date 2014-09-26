@@ -1,6 +1,7 @@
 util.AddNetworkString("RAM_MapVoteStart")
 util.AddNetworkString("RAM_MapVoteUpdate")
 util.AddNetworkString("RAM_MapVoteCancel")
+util.AddNetworkString("RTV_Delay")
 
 MapVote.Continued = false
 
@@ -26,11 +27,40 @@ net.Receive("RAM_MapVoteUpdate", function(len, ply)
     end
 end)
 
+if file.Exists( "mapvote/recentmaps.txt", "DATA" ) then
+    recentmaps = util.JSONToTable(file.Read("mapvote/recentmaps.txt", "DATA"))
+else
+    recentmaps = {}
+end
+
+if file.Exists( "mapvote/config.txt", "DATA" ) then
+    MapVote.Config = util.JSONToTable(file.Read("mapvote/config.txt", "DATA"))
+else
+    MapVote.Config = {}
+end
+
+function CoolDownDoStuff()
+    cooldownnum = MapVote.Config.MapsBeforeRevote or 3
+
+    if table.getn(recentmaps) == cooldownnum then 
+        table.remove(recentmaps)
+    end
+
+    local curmap = game.GetMap():lower()..".bsp"
+
+    if not table.HasValue(recentmaps, curmap) then
+        table.insert(recentmaps, 1, curmap)
+    end
+
+    file.Write("mapvote/recentmaps.txt", util.TableToJSON(recentmaps))
+end
 
 function MapVote.Start(length, current, limit, prefix, callback)
     current = current or MapVote.Config.AllowCurrentMap or false
     length = length or MapVote.Config.TimeLimit or 28
     limit = limit or MapVote.Config.MapLimit or 24
+    cooldown = MapVote.Config.EnableCooldown or MapVote.Config.EnableCooldown == nil and true
+    prefix = prefix or MapVote.Config.MapPrefixes
 
     local is_expression = false
 
@@ -60,6 +90,7 @@ function MapVote.Start(length, current, limit, prefix, callback)
     for k, map in RandomPairs(maps) do
         local mapstr = map:sub(1, -5):lower()
         if(not current and game.GetMap():lower()..".bsp" == map) then continue end
+        if(cooldown and table.HasValue(recentmaps, map)) then continue end
 
         if is_expression then
             if(string.find(map, prefix)) then -- This might work (from gamemode.txt)
@@ -114,6 +145,8 @@ function MapVote.Start(length, current, limit, prefix, callback)
             
         end
         
+        CoolDownDoStuff()
+
         local winner = table.GetWinningKey(map_results) or 1
         
         net.Start("RAM_MapVoteUpdate")
@@ -124,6 +157,7 @@ function MapVote.Start(length, current, limit, prefix, callback)
         
         local map = MapVote.CurrentMaps[winner]
 
+        
         
         timer.Simple(4, function()
             if (hook.Run("MapVoteChange", map) != false) then
@@ -136,6 +170,12 @@ function MapVote.Start(length, current, limit, prefix, callback)
         end)
     end)
 end
+
+hook.Add( "Shutdown", "RemoveRecentMaps", function()
+        if file.Exists( "mapvote/recentmaps.txt", "DATA" ) then
+            file.Delete( "mapvote/recentmaps.txt" )
+        end
+end )
 
 function MapVote.Cancel()
     if MapVote.Allow then

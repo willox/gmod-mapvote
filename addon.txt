@@ -1,10 +1,10 @@
 "AddonInfo"
 {
 	"name"			"MapVote"
-	"version"		"1.0"
+	"version"		"1.1"
 	"up_date"		""
-	"author_name"	"Willox & Dizla (a little bit)"
-	"author_email"	"me@willox.tv"
-	"author_url"	"http://resonance-gaming.co.uk/"
-	"info"			"http://resonance-gaming.co.uk/"
+	"author_name"	"Tyrantelf (Origional: Willox & Dizla (a little bit))"
+	"author_email"	"tyrantelf@iongaming.org"
+	"author_url"	"http://iongaming.org/"
+	"info"			"http://iongaming.org/"
 }
