@@ -61,6 +61,7 @@ function MapVote.Start(length, current, limit, prefix, callback)
     limit = limit or MapVote.Config.MapLimit or 24
     cooldown = MapVote.Config.EnableCooldown or MapVote.Config.EnableCooldown == nil and true
     prefix = prefix or MapVote.Config.MapPrefixes
+    autoGamemode = autoGamemode or MapVote.Config.AutoGamemode or MapVote.Config.AutoGamemode == nil and true
 
     local is_expression = false
 
@@ -157,13 +158,35 @@ function MapVote.Start(length, current, limit, prefix, callback)
         
         local map = MapVote.CurrentMaps[winner]
 
-        
+        local gamemode = nil
+
+        if (autoGamemode) then
+            -- check if map matches a gamemode's map pattern
+            for k, gm in pairs(engine.GetGamemodes()) do
+                -- ignore empty patterns
+                if (gm.maps and gm.maps ~= "") then
+                    -- patterns are separated by "|"
+                    for k2, pattern in pairs(string.Split(gm.maps, "|")) do
+                        if (string.match(map, pattern)) then
+                            gamemode = gm.name
+                            break
+                        end
+                    end
+                end
+            end
+        else
+            print("not enabled")
+        end
         
         timer.Simple(4, function()
-            if (hook.Run("MapVoteChange", map) != false) then
+            if (hook.Run("MapVoteChange", map) ~= false) then
                 if (callback) then
                     callback(map)
                 else
+                    -- if map requires another gamemode then switch to it
+                    if (gamemode and gamemode ~= engine.ActiveGamemode()) then
+                        RunConsoleCommand("gamemode", gamemode)
+                    end
                     RunConsoleCommand("changelevel", map)
                 end
             end
