@@ -13,15 +13,13 @@ net.Receive("RAM_MapVoteUpdate", function(len, ply)
             if(update_type == MapVote.UPDATE_VOTE) then
                 local map_id = net.ReadUInt(32)
                 
-                if(MapVote.CurrentMaps[map_id]) then
-                    MapVote.Votes[ply:SteamID()] = map_id
-                    
-                    net.Start("RAM_MapVoteUpdate")
-                        net.WriteUInt(MapVote.UPDATE_VOTE, 3)
-                        net.WriteEntity(ply)
-                        net.WriteUInt(map_id, 32)
-                    net.Broadcast()
-                end
+                MapVote.Votes[ply:SteamID()] = map_id
+                
+                net.Start("RAM_MapVoteUpdate")
+                    net.WriteUInt(MapVote.UPDATE_VOTE, 3)
+                    net.WriteEntity(ply)
+                    net.WriteUInt(map_id, 32)
+                net.Broadcast()
             end
         end
     end
@@ -42,7 +40,7 @@ end
 function CoolDownDoStuff()
     cooldownnum = MapVote.Config.MapsBeforeRevote or 3
 
-    if table.getn(recentmaps) == cooldownnum then 
+    while table.getn(recentmaps) >= cooldownnum do
         table.remove(recentmaps)
     end
 
@@ -155,10 +153,14 @@ function MapVote.Start(length, current, limit, prefix, callback)
             
             net.WriteUInt(winner, 32)
         net.Broadcast()
-        
-        local map = MapVote.CurrentMaps[winner]
 
         local gamemode = nil
+        local map
+        if (winner > #vote_maps) then
+            map = MapVote.CurrentMaps[math.random(1,#vote_maps)]
+        else
+            map = MapVote.CurrentMaps[winner]
+        end
 
         if (autoGamemode) then
             -- check if map matches a gamemode's map pattern
@@ -174,8 +176,6 @@ function MapVote.Start(length, current, limit, prefix, callback)
                     end
                 end
             end
-        else
-            print("not enabled")
         end
         
         timer.Simple(4, function()
