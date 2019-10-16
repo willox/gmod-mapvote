@@ -108,7 +108,6 @@ function PANEL:Init()
     end
 
     self.closeButton.DoClick = function()
-        print("HI")
         self:SetVisible(false)
     end
 
@@ -249,6 +248,45 @@ end
 
 function PANEL:SetMaps(maps)
     self.mapList:Clear()
+    
+    local button = vgui.Create("DButton", self.mapList)
+    button.ID = #maps + 1
+    button:SetText("Random Map")
+
+    button.DoClick = function()
+        net.Start("RAM_MapVoteUpdate")
+            net.WriteUInt(MapVote.UPDATE_VOTE, 3)
+            net.WriteUInt(button.ID, 32)
+        net.SendToServer()
+    end
+
+    do
+        local Paint = button.Paint
+        button.Paint = function(s, w, h)
+            local col = Color(255, 255, 255, 10)
+
+            if(button.bgColor) then
+                col = button.bgColor
+            end
+
+            draw.RoundedBox(4, 0, 0, w, h, col)
+            Paint(s, w, h)
+        end
+    end
+
+    button:SetTextColor(color_white)
+    button:SetContentAlignment(4)
+    button:SetTextInset(8, 0)
+    button:SetFont("RAM_VoteFont")
+
+    local extra = math.Clamp(300, 0, ScrW() - 640)
+
+    button:SetDrawBackground(false)
+    button:SetTall(24)
+    button:SetWide(2 * (286 + (extra / 2)))
+    button.NumVotes = 0
+
+    self.mapList:AddItem(button)
     
     for k, v in RandomPairs(maps) do
         local button = vgui.Create("DButton", self.mapList)
