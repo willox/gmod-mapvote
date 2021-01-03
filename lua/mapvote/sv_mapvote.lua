@@ -27,6 +27,25 @@ net.Receive("RAM_MapVoteUpdate", function(len, ply)
     end
 end)
 
+MapVote.BannedMaps = MapVote.BannedMaps or {}
+MapVote.AllowedMaps = MapVote.AllowedMaps or {}
+
+-- Load votemaps config from ulx if exists
+if file.Exists( "ulx/votemaps.txt", "DATA" ) then
+    local votemaps = file.Read("ulx/votemaps.txt", "DATA")
+    maps = {}
+    for s in votemaps:gmatch("[^\r\n]+") do
+        table.insert(maps, s)
+    end
+
+    local mode = GetConVar( "ulx_votemapMapmode" ):GetInt()
+    if mode == 1 then
+        MapVote.BannedMaps = maps
+    else    
+        MapVote.AllowedMaps = maps
+    end
+end
+
 if file.Exists( "mapvote/recentmaps.txt", "DATA" ) then
     recentmaps = util.JSONToTable(file.Read("mapvote/recentmaps.txt", "DATA"))
 else
@@ -83,6 +102,29 @@ function MapVote.Start(length, current, limit, prefix, callback)
     end
     
     local maps = file.Find("maps/*.bsp", "GAME")
+    
+    if #MapVote.AllowedMaps > 0 then
+        local _maps = {}
+        for iter, map in pairs(maps) do
+            local mapName = map:sub(1, -5)
+            if table.HasValue(MapVote.AllowedMaps, mapName) then
+                _maps[iter] = map
+            end
+        end
+        maps = _maps
+    end
+
+    if #MapVote.BannedMaps > 0 then
+       local _maps = {}
+       for iter, map in pairs(maps) do
+          local mapName = map:sub(1, -5)
+          if table.HasValue(MapVote.BannedMaps, mapName) == false then
+              _maps[iter] = map
+          end
+       end
+       maps = _maps
+    end
+
     
     local vote_maps = {}
     
